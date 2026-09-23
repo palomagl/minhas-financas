@@ -9,6 +9,7 @@
   --muted: #8A6573;
   --line: #F2D5E0;
   --brand: #F8C0D3;
+  --splash: #F7BFD3;
   --brand-deep: #F3B3C8;
   --on-brand: #4A1D31;
   --on-brand-soft: rgba(74,29,49,.72);
@@ -326,50 +327,45 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 /* ---------- Abertura ---------- */
 .boot {
-  position: fixed; inset: 0; z-index: 50;
+  position: fixed; inset: 0; z-index: 60;
   display: grid; place-items: center;
-  background: linear-gradient(180deg, var(--brand) 0%, var(--ground) 75%);
+  background: var(--splash);
+  transition: opacity .4s ease, visibility .4s;
 }
-.boot-logo { width: 96px; height: 96px; border-radius: 24px; box-shadow: var(--shadow); animation: pulse 1.4s ease-in-out infinite; }
-@keyframes pulse { 50% { transform: scale(.94); opacity: .8; } }
+.boot.leaving { opacity: 0; visibility: hidden; }
+.boot-art { width: 168px; height: auto; animation: bootIn .7s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes bootIn { from { transform: scale(.88) translateY(6px); opacity: 0; } to { transform: none; opacity: 1; } }
 
 /* ---------- Login ---------- */
 .login {
-  position: fixed; inset: 0; z-index: 45; overflow-y: auto;
-  background: linear-gradient(180deg, var(--brand) 0%, var(--ground) 72%);
-  padding: calc(env(safe-area-inset-top, 0px) + 24px) 20px calc(env(safe-area-inset-bottom, 0px) + 24px);
-  display: flex; align-items: center; justify-content: center;
+  position: fixed; inset: 0; z-index: 45;
+  background: var(--ground);
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: calc(env(safe-area-inset-top, 0px) + 26vh) 28px calc(env(safe-area-inset-bottom, 0px) + 44px);
 }
-.login-inner {
-  width: 100%; max-width: 360px;
-  display: flex; flex-direction: column; align-items: center; text-align: center;
-}
-.login-logo {
-  width: 120px; height: 120px; border-radius: 30px; object-fit: cover;
-  background: var(--surface);
-  box-shadow: 0 14px 34px rgba(170,40,90,.22);
-  margin-bottom: 22px;
-}
+.login > * { width: 100%; max-width: 420px; margin-inline: auto; }
 .login-title {
-  margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 34px; letter-spacing: -.02em;
-  color: var(--on-brand); text-wrap: balance;
+  margin-top: 0; margin-bottom: 0;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(46px, 14vw, 64px); line-height: .96; letter-spacing: -.035em;
+  color: var(--on-brand);
 }
-.login-tag { margin: 8px 0 34px; font-size: 17px; color: var(--muted); }
+.login-title span { color: var(--accent); }
+.login-actions { display: flex; flex-direction: column; gap: 14px; }
 .google-btn {
   width: 100%; min-height: 56px; border-radius: 999px;
   display: flex; align-items: center; justify-content: center; gap: 12px;
   background: #FFFFFF; color: #1F1F1F;
   border: 1px solid var(--field-line);
   font-weight: 600; font-size: 17px;
-  box-shadow: 0 4px 14px rgba(120,30,70,.10);
+  box-shadow: 0 4px 14px rgba(120,30,70,.08);
   transition: box-shadow .15s, transform .12s;
 }
-.google-btn:hover { box-shadow: 0 6px 20px rgba(120,30,70,.18); }
+.google-btn:hover { box-shadow: 0 6px 20px rgba(120,30,70,.16); }
 .google-btn:active { transform: scale(.98); }
 .google-btn:disabled { opacity: .6; cursor: default; }
 .google-btn svg { width: 22px; height: 22px; flex: none; }
-.login-error { margin: 16px 0 0; color: var(--danger); font-weight: 600; font-size: 15px; line-height: 1.45; }
-.login-note { margin: 22px 0 0; font-size: 14px; color: var(--muted); line-height: 1.45; max-width: 30ch; }
+.login-error { margin: 0; color: var(--danger); font-weight: 600; font-size: 15px; line-height: 1.45; text-align: center; }
 
 /* ---------- Conta no menu ---------- */
 .menu-user {

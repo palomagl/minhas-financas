@@ -50,11 +50,29 @@ const now = new Date();
 const state = { y: now.getFullYear(), m: now.getMonth() + 1, ready: false, user: null };
 
 /* ================= screens ================= */
-function showScreen(name) {
-  $("#boot").hidden = name !== "boot";
+// A abertura rosa fica pelo menos BOOT_MIN ms na tela e depois some suavemente.
+const BOOT_MIN = 1300;
+const bootStart = performance.now();
+let bootDone = false, pendingScreen = null, pendingTimer = null;
+
+function applyScreen(name) {
   $("#loginScreen").hidden = name !== "login";
   $("#app").hidden = name !== "app";
   if (name !== "app") { $("#formScreen").hidden = true; closeSheet(); closeMenu(); }
+  if (!bootDone) {
+    bootDone = true;
+    const boot = $("#boot");
+    boot.classList.add("leaving");
+    setTimeout(() => { boot.hidden = true; }, 450);
+  }
+}
+
+function showScreen(name) {
+  if (name === "boot") return; // já começa visível
+  pendingScreen = name;
+  const wait = bootDone ? 0 : BOOT_MIN - (performance.now() - bootStart);
+  if (wait <= 0) { applyScreen(name); return; }
+  if (!pendingTimer) pendingTimer = setTimeout(() => { pendingTimer = null; applyScreen(pendingScreen); }, wait);
 }
 
 function loginError(msg) {
